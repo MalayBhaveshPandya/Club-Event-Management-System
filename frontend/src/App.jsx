@@ -15,6 +15,9 @@ import AddEvent from "./components/Club/addevent.jsx";
 import RegisterEvent from "./components/Student/registerEvent.jsx";
 import RegistrationList from "./components/Club/getResponses.jsx";
 import GetEvent from "./components/Club/getevents.jsx";
+import MyRegisteredEvents from "./components/Student/myEvents.jsx";
+import AdminClubApproval from "./components/Admin/adminClubApproval.jsx";
+import AdminLogin from "./components/Admin/login.jsx";
 
 function App() {
   return (
@@ -39,6 +42,9 @@ function App() {
           path="/events/:eventId/registrations"
           element={<RegistrationList />}
         />
+        <Route path="/student/myevents" element={<MyRegisteredEvents />} />
+        <Route path="/admin/approve-clubs" element={<AdminClubApproval />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
       </Routes>
     </>
   );

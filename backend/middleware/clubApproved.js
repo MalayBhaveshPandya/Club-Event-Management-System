@@ -12,11 +12,17 @@ module.exports = async function (req, res, next) {
     const club = await Club.findById(decoded.club.id);
 
     if (!club) return res.status(404).json({ message: "Club not found" });
+    
+    // Check if club is approved
+    if (!club.isApproved) {
+      return res.status(403).json({ 
+        message: "Your club is pending admin approval. You cannot create events yet." 
+      });
+    }
 
-    req.club = club; // Attach club to request
+    req.club = club;
     next();
   } catch (error) {
     res.status(401).json({ message: "Invalid Token" });
   }
 };
-

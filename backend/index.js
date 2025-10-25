@@ -1,6 +1,5 @@
 const connectToMongo=require("./db");
 const express=require("express");
-
 const dotenv=require('dotenv').config();
 const cors=require('cors');
 connectToMongo();
@@ -20,6 +19,7 @@ app.get("/",(req,res)=>{
 app.use("/api/admin",require("./routes/admin/admin"));
 app.use("/api/student",require("./routes/student/student"));
 app.use("/api/clubs",require("./routes/clubs/club"));
+
 
 app.listen(port,()=>{
     console.log(`Server is running on port http://localhost:${port}`);

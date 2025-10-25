@@ -12,7 +12,9 @@ const RegisterEvent = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/student/${eventId}`);
+        const res = await axios.get(
+          `http://localhost:3000/api/student/event/${eventId}`
+        );
         setEvent(res.data);
       } catch (err) {
         toast.error("Could not fetch event.");
@@ -52,8 +54,7 @@ const RegisterEvent = () => {
     }
   };
 
-  if (!event)
-    return <div>Loading event information...</div>;
+  if (!event) return <div>Loading event information...</div>;
 
   return (
     <div style={{ padding: "24px" }}>
@@ -67,14 +68,14 @@ const RegisterEvent = () => {
                 {field.label}
                 {field.required && " *"}
                 <br />
-                {field.fieldType === "text" || field.fieldType === "email" || field.fieldType === "number" ? (
+                {field.fieldType === "text" ||
+                field.fieldType === "email" ||
+                field.fieldType === "number" ? (
                   <input
                     type={field.fieldType}
                     required={field.required}
                     value={responses[field.label] || ""}
-                    onChange={e =>
-                      handleInput(field.label, e.target.value)
-                    }
+                    onChange={(e) => handleInput(field.label, e.target.value)}
                     style={{ marginTop: "3px" }}
                   />
                 ) : null}

@@ -44,5 +44,5 @@ const StuSchema=new Schema({
     }
 })
 
-const Student=mongoose.model("student",StuSchema);
+const Student=mongoose.model("Student",StuSchema);
 module.exports=Student;

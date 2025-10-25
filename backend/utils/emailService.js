@@ -136,4 +136,138 @@ const sendRegistrationConfirmation = async (student, event) => {
   }
 };
 
-module.exports = { sendOTP,sendOTP1,sendRegistrationConfirmation };
+const sendAdminClubAlert = async (clubName, clubEmail) => {
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.ADMIN_EMAIL, // Set this in .env
+      subject: `New Club Registration Alert: ${clubName}`,
+      html: `
+        <h2>🚨 New Club Registration</h2>
+        <p>A new club has been created and requires your approval:</p>
+        <p><b>Club Name:</b> ${clubName}</p>
+        <p><b>Club Email:</b> ${clubEmail}</p>
+        <p>Please log in to the admin dashboard to approve or reject this club.</p>
+        <hr/>
+        <p>Club & Event Management System</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Admin alert sent for new club: ${clubName}`);
+  } catch (error) {
+    console.error("❌ Error sending admin alert:", error);
+  }
+};
+
+// Send approval email to club
+const sendClubApprovalEmail = async (clubName, clubEmail) => {
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: clubEmail,
+      subject: `🎉 Club Approved: ${clubName}`,
+      html: `
+        <h2>Congratulations! 🎉</h2>
+        <p>Dear <b>${clubName}</b>,</p>
+        <p>Your club has been <b>approved</b> by the admin!</p>
+        <p>You can now start creating and managing events on the platform.</p>
+        <p>Thank you for being part of the Club & Event Management System.</p>
+        <hr/>
+        <p>Best regards,<br>Admin Team</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Approval email sent to ${clubEmail}`);
+  } catch (error) {
+    console.error("❌ Error sending approval email:", error);
+  }
+};
+
+// Send rejection email to club
+const sendClubRejectionEmail = async (clubName, clubEmail) => {
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: clubEmail,
+      subject: `Club Registration Status: ${clubName}`,
+      html: `
+        <h2>Club Registration Update</h2>
+        <p>Dear <b>${clubName}</b>,</p>
+        <p>Unfortunately, your club registration has been <b>rejected</b> by the admin.</p>
+        <p>If you believe this is an error or have questions, please contact the admin team.</p>
+        <hr/>
+        <p>Best regards,<br>Admin Team</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Rejection email sent to ${clubEmail}`);
+  } catch (error) {
+    console.error("❌ Error sending rejection email:", error);
+  }
+};
+
+const sendEventNotificationEmail=async(email,name,event)=>{
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `New Event Alert: ${event.title}`,
+      html: `
+      <h2>🎉 New Event Posted!</h2>
+        <p>Dear <b>${name}</b>,</p>
+        <p>A new event has been posted:</p>
+        <h3>${event.title}</h3>
+        <p><b>Date:</b> ${new Date(event.date).toLocaleDateString()}</p>
+        <p><b>Location:</b> ${event.location}</p>
+        <p>${event.description}</p>
+        <p>Register now to participate!</p>
+        <hr/>
+        <p>Club & Event Management System</p>
+      `,
+    };
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Event notification sent to ${email}`);
+  } catch (error) {
+    console.error("❌ Error sending event notification email:", error);
+  }
+};
+
+const sendInterviewReminderEmail=async(email,name,interviewDetails)=>{
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `Interview Reminder: ${interviewDetails.position}`,
+      html: `
+      <h2>📅 Interview Reminder</h2>
+        <p>Dear <b>${name}</b>,</p>
+        <p>This is a reminder about your upcoming interview:</p>
+        <p><b>Position:</b> ${interviewDetails.position || "N/A"}</p>
+        <p><b>Date:</b> ${interviewDetails.date}</p>
+        <p><b>Time:</b> ${interviewDetails.time}</p>
+        <p><b>Location:</b> ${interviewDetails.location || "TBD"}</p>
+        <p>Good luck!</p>
+        <hr/>
+        <p>Club & Event Management System</p>
+      `,
+    };
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Interview reminder sent to ${email}`);
+  } catch (error) {
+    console.error("❌ Error sending interview reminder email:", error);
+  }
+};
+
+module.exports = { 
+  sendOTP, 
+  sendOTP1, 
+  sendRegistrationConfirmation, 
+  sendAdminClubAlert,
+  sendClubApprovalEmail,
+  sendClubRejectionEmail,
+  sendEventNotificationEmail,
+  sendInterviewReminderEmail
+};
