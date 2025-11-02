@@ -12,7 +12,7 @@ const AdminLogin = () => {
     try {
       // Request to backend for login
       const response = await axios.post(
-        "http://localhost:3000/api/admin/adminlogin",
+        "http://localhost:3000/api/admin/login",
         {
           email,
           password,

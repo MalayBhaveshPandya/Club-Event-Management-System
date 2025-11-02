@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const Otps = () => {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const email = localStorage.getItem("email");
       const response = await axios.post(
@@ -23,8 +22,15 @@ const Otps = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="flex justify-center items-center min-h-screen bg-indigo-50">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8"
+        style={{ minWidth: 320 }}
+      >
+        <h3 className="text-xl font-bold mb-6 text-indigo-700">
+          OTP Verification
+        </h3>
         <input
           type="text"
           name="otp"
@@ -32,13 +38,19 @@ const Otps = () => {
           value={otp}
           onChange={(e) => setOtp(e.target.value)}
           required
+          className="border rounded w-full py-2 px-3 mb-4 focus:outline-none"
         />
         <input
           type="hidden"
           name="email"
           value={localStorage.getItem("email")}
         />
-        <button type="submit">Verify OTP</button>
+        <button
+          type="submit"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-full"
+        >
+          Verify OTP
+        </button>
       </form>
     </div>
   );

@@ -9,11 +9,11 @@ module.exports = async function (req, res, next) {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    const club = await Club.findById(decoded.club.id);
+    const club = await Club.findById(decoded.club._id);
 
     if (!club) return res.status(404).json({ message: "Club not found" });
 
-    req.club = club; // Attach club to request
+    req.club = club;
     next();
   } catch (error) {
     res.status(401).json({ message: "Invalid Token" });

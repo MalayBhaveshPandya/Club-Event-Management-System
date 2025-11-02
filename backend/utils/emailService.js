@@ -4,12 +4,12 @@ const OtpVerification = require("../models/student/otpv.js");
 const Student=require("../models/student/student.js");
 const Club=require("../models/club/club.js");
 
-// Validate environment variables
+// Validating environment variables
 if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
   console.error("❌ EMAIL_USER and EMAIL_PASS must be set in .env file");
 }
 
-// Create transporter
+// Creating transporter
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Verify transporter
+// Verifying transporter
 transporter.verify((err, success) => {
   if (err) {
     console.error("❌ Transporter verification failed:", err);
@@ -35,10 +35,10 @@ const sendOTP = async (name, email, res) => {
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
     const hashedOTP = await bcrypt.hash(otp, 10);
     const student = await Student.findOne({ email:email });
-    // Delete any existing OTP for the user
+    // Deleting any existing OTP for the user
     await OtpVerification.deleteMany({ userId: student._id });
 
-    // Save new OTP record
+    // Saving new OTP record
     const otpRecord = await OtpVerification.create({
       userId: student._id,
       otp: hashedOTP,
@@ -46,7 +46,7 @@ const sendOTP = async (name, email, res) => {
       expiresAt: Date.now() + 5 * 60 * 1000, // 5 minutes
     });
 
-    // Email content
+    // Emailing content
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
@@ -78,10 +78,10 @@ const sendOTP1 = async (name, email, res) => {
       console.error("Club not found for email",email);
       return;
     }
-    // Delete any existing OTP for the user
+    // Deleting any existing OTP for the user
     await OtpVerification.deleteMany({ userId: club._id });
 
-    // Save new OTP record
+    // Saving new OTP record
     const otpRecord = await OtpVerification.create({
       userId: club._id,
       otp: hashedOTP,
@@ -89,7 +89,7 @@ const sendOTP1 = async (name, email, res) => {
       expiresAt: Date.now() + 5 * 60 * 1000, // 5 minutes
     });
 
-    // Email content
+    // Emailing content
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
@@ -140,7 +140,7 @@ const sendAdminClubAlert = async (clubName, clubEmail) => {
   try {
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.ADMIN_EMAIL, // Set this in .env
+      to: process.env.ADMIN_EMAIL,
       subject: `New Club Registration Alert: ${clubName}`,
       html: `
         <h2>🚨 New Club Registration</h2>
@@ -160,7 +160,7 @@ const sendAdminClubAlert = async (clubName, clubEmail) => {
   }
 };
 
-// Send approval email to club
+// Sending approval email to club
 const sendClubApprovalEmail = async (clubName, clubEmail) => {
   try {
     const mailOptions = {
@@ -185,7 +185,7 @@ const sendClubApprovalEmail = async (clubName, clubEmail) => {
   }
 };
 
-// Send rejection email to club
+// Sending rejection email to club
 const sendClubRejectionEmail = async (clubName, clubEmail) => {
   try {
     const mailOptions = {

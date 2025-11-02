@@ -54,39 +54,57 @@ const RegisterEvent = () => {
     }
   };
 
-  if (!event) return <div>Loading event information...</div>;
+  if (!event)
+    return (
+      <div className="p-6 max-w-3xl mx-auto">
+        <div className="text-gray-500">Loading event information...</div>
+      </div>
+    );
 
   return (
-    <div style={{ padding: "24px" }}>
-      <h2>Register for {event.title}</h2>
-      <p>{event.description}</p>
-      <form onSubmit={handleSubmit}>
-        {event.registrationForm && event.registrationForm.length > 0 ? (
-          event.registrationForm.map((field, i) => (
-            <div key={i} style={{ marginBottom: "14px" }}>
-              <label>
-                {field.label}
-                {field.required && " *"}
-                <br />
-                {field.fieldType === "text" ||
-                field.fieldType === "email" ||
-                field.fieldType === "number" ? (
+    <div className="p-6 max-w-3xl mx-auto bg-indigo-50">
+      <div className="bg-white p-6 rounded shadow">
+        <h2 className="text-2xl font-semibold mb-2">
+          Register for {event.title}
+        </h2>
+        <p className="text-sm text-gray-600 mb-4">{event.description}</p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {event.registrationForm && event.registrationForm.length > 0 ? (
+            event.registrationForm.map((field, i) => (
+              <div key={i} className="">
+                <label className="block text-sm font-medium text-gray-700">
+                  {field.label}{" "}
+                  {field.required && <span className="text-red-500">*</span>}
+                </label>
+                {(field.fieldType === "text" ||
+                  field.fieldType === "email" ||
+                  field.fieldType === "number") && (
                   <input
                     type={field.fieldType}
                     required={field.required}
                     value={responses[field.label] || ""}
                     onChange={(e) => handleInput(field.label, e.target.value)}
-                    style={{ marginTop: "3px" }}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2"
                   />
-                ) : null}
-              </label>
-            </div>
-          ))
-        ) : (
-          <p>No registration fields defined.</p>
-        )}
-        <button type="submit">Register</button>
-      </form>
+                )}
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500">
+              No registration fields defined.
+            </p>
+          )}
+          <div>
+            <button
+              type="submit"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+            >
+              Register
+            </button>
+          </div>{" "}
+        </form>
+      </div>
     </div>
   );
 };

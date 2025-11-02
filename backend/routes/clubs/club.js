@@ -17,7 +17,7 @@ router.post("/verifyotp", clubController.verifyOTP);
 
 //Event Creation,getting clubs events and all events
 router.post("/addevents", authApprovedClub, fileUpload, clubController.addEvent);
-router.get("/getevents", authApprovedClub, clubController.getAllEvents);
+router.get("/getevents", clubController.getAllEvents);
 router.get("/events/:eventId/registrations", authApprovedClub, clubController.getEventRegistrations);
 router.get("/events", authApprovedClub, clubController.getClubEvents);
 

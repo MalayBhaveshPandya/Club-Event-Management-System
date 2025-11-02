@@ -203,7 +203,7 @@ const getClubEvents = async (req, res) => {
 // Getting registrations for a specific event (private)
 const getEventRegistrations = async (req, res) => {
   try {
-    const eventId = req.params.id;
+    const eventId = req.params.eventId;
     const event = await Event.findById(eventId);
 
     if (!event) {

@@ -244,7 +244,7 @@ const registerForEvent = async (req, res) => {
   }
 };
 
-// Get student's registered events
+// Getting student's registered events
 const getMyEvents = async (req, res) => {
   try {
     const studentId = req.student._id;

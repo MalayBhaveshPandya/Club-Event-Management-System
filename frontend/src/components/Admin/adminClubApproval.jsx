@@ -9,6 +9,8 @@ const AdminClubApproval = () => {
   useEffect(() => {
     const fetchClubs = async () => {
       try {
+        console.log("Stored token:", localStorage.getItem("token"));
+
         const token = localStorage.getItem("token");
         const res = await axios.get(
           "http://localhost:3000/api/admin/all-clubs",

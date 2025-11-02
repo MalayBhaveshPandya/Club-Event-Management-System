@@ -19,7 +19,7 @@ app.get("/",(req,res)=>{
 app.use("/api/admin",require("./routes/admin/admin"));
 app.use("/api/student",require("./routes/student/student"));
 app.use("/api/clubs",require("./routes/clubs/club"));
-
+app.use("/api/chat",require("./routes/chatbot/chatbot"));
 
 app.listen(port,()=>{
     console.log(`Server is running on port http://localhost:${port}`);

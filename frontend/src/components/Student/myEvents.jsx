@@ -23,41 +23,46 @@ const MyRegisteredEvents = () => {
     fetchEvents();
   }, []);
 
-  if (loading) return <p>Loading your events...</p>;
-  //   if (!events.length) return <p>You have not registered for any events.</p>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-40">
+        <p className="text-gray-500">Loading your events...</p>
+      </div>
+    );
+  if (!events.length)
+    return (
+      <div className="flex items-center justify-center h-40">
+        <p className="text-gray-500">You have not registered for any events.</p>
+      </div>
+    );
 
   return (
-    <div>
-      <h2>My Registered Events</h2>
-      {events.map((event) => (
-        <div
-          key={event._id}
-          style={{
-            boxShadow: "0 0 10px #eee",
-            margin: "1em 0",
-            padding: 18,
-            borderRadius: 7,
-          }}
-        >
-          <h3>{event.title}</h3>
-          <p>
-            <strong>Date:</strong>{" "}
-            {event.date ? new Date(event.date).toLocaleString() : "TBD"}
-          </p>
-          <p>
-            <strong>Description:</strong> {event.description}
-          </p>
-          <p>
-            <strong>Location:</strong> {event.location}
-          </p>
-          {event.organizer && (
-            <div>
-              <strong>Organizer:</strong> {event.organizer.name} (
-              {event.organizer.email})
-            </div>
-          )}
-        </div>
-      ))}
+    <div className="p-8 max-w-4xl mx-auto bg-indigo-50">
+      <h2 className="text-2xl font-bold mb-8 text-indigo-700 text-center">
+        My Registered Events
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {events.map((event) => (
+          <div
+            key={event._id}
+            className="bg-white p-6 rounded-lg shadow hover:shadow-lg"
+          >
+            <h3 className="text-lg font-semibold text-blue-700 mb-2">
+              {event.title}
+            </h3>
+            <p className="mb-1">
+              <strong>Date:</strong>{" "}
+              {event.date ? new Date(event.date).toLocaleString() : "TBD"}
+            </p>
+            <p className="mb-1">
+              <strong>Description:</strong> {event.description}
+            </p>
+            <p className="mb-1">
+              <strong>Location:</strong> {event.location}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,108 +1,106 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const ClubInfo = () => {
   const [club, setClub] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchClubInfo = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("No token found. Please log in first.");
-        return;
-      }
 
+  useEffect(() => {
+    const fetchClub = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/clubs/getclub", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setClub(res.data);
-        toast.success("Club info loaded!");
+        const token = localStorage.getItem("token");
+        if (!token) throw new Error("No token found, please log in first.");
+        const response = await axios.get(
+          "http://localhost:3000/api/clubs/getclub",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setClub(response.data);
       } catch (err) {
         const message =
-          err.response?.data?.message ||
           err.response?.data?.error ||
-          "Failed to fetch club details";
-        toast.error(message);
+          err.response?.data?.message ||
+          err.message;
+        setError(message);
+      } finally {
+        setLoading(false);
       }
     };
-
-    fetchClubInfo();
+    fetchClub();
   }, []);
 
-  if (!club)
+  if (loading)
     return (
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
-        <p>Loading club data...</p>
+      <div className="flex items-center justify-center h-40">
+        <p className="text-gray-500">Loading club data...</p>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="flex items-center justify-center h-40">
+        <p className="text-red-500">{error}</p>
       </div>
     );
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Club Information</h1>
-      <h2>{club.name}</h2>
-      <p>
-        <strong>Description:</strong> {club.description}
-      </p>
-      <p>
-        <strong>Email:</strong> {club.email}
-      </p>
-      <p>
-        <strong>Members Count:</strong> {club.membersCount}
-      </p>
-      {club.logo && (
-        <div>
-          <strong>Logo:</strong>
-          <br />
-          <img
-            src={club.logo}
-            alt="Club Logo"
-            style={{
-              width: "150px",
-              height: "150px",
-              borderRadius: "10px",
-              objectFit: "cover",
-            }}
-          />
-        </div>
+    <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded shadow bg-indigo-50">
+      <h1 className="text-2xl font-bold mb-6 text-indigo-700">Club Info</h1>
+      {club && (
+        <>
+          <div className="flex items-center gap-6 mb-4">
+            {club.logo && (
+              <img
+                src={club.logo}
+                alt="Club Logo"
+                className="w-20 h-20 rounded-md object-cover shadow"
+              />
+            )}
+            <h2 className="font-semibold text-lg">{club.name}</h2>
+          </div>
+          <div className="mb-2">
+            <span className="font-semibold">Email:</span> {club.email}
+          </div>
+          <div className="mb-2">
+            <span className="font-semibold">Description:</span>{" "}
+            {club.description}
+          </div>
+          <div className="mb-2">
+            <span className="font-semibold">Members Count:</span>{" "}
+            {club.membersCount}
+          </div>
+          <div className="mb-2">
+            <span className="font-semibold">Verified:</span>{" "}
+            {club.isVerified ? "Yes ✅" : "No ❌"}
+          </div>
+          <div className="mb-4">
+            <span className="font-semibold">Approved:</span>{" "}
+            {club.isApproved ? "Yes ✅" : "No ❌"}
+          </div>
+          <button
+            onClick={() => navigate("/events")}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+          >
+            My Events
+          </button>
+          {club.isApproved ? (
+            <button
+              onClick={() => navigate("/club/addevent")}
+              className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full mt-4"
+            >
+              Add Event
+            </button>
+          ) : (
+            <button
+              disabled
+              className="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded w-full mt-4 cursor-not-allowed"
+            >
+              Add Event (waiting approval)
+            </button>
+          )}
+        </>
       )}
-      <p>
-        <strong>Verified:</strong>{" "}
-        {club.isVerified ? "Yes ✅" : "No ❌ (Awaiting verification)"}
-      </p>
-
-      <Link
-        to="/club/addevent"
-        style={{
-          display: "inline-block",
-          marginTop: "20px",
-          padding: "10px 20px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          textDecoration: "none",
-          borderRadius: "5px",
-        }}
-      >
-        Add Event
-      </Link>
-      <button
-        onClick={() => navigate("/events")}
-        style={{
-          display: "inline-block",
-          marginTop: "20px",
-          marginLeft: "20px",
-          padding: "10px 20px",
-          backgroundColor: "#28a745",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        Events
-      </button>
     </div>
   );
 };

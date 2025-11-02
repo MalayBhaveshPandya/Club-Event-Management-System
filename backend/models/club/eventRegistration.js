@@ -3,7 +3,7 @@ const mongoose=require("mongoose");
 const eventRegistrationSchema = new mongoose.Schema({
   event: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Event", // Must match the actual model name exactly
+    ref: "Event",
     required: true
   },
   registrant: {
