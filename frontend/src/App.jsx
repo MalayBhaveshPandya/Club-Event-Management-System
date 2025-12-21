@@ -51,13 +51,13 @@ function App() {
         <Route path="/club/register" element={<RegisterClub />} />
         <Route path="/student/login" element={<StudentLogin />} />
         <Route path="/club/login" element={<ClubLogin />} />
-
+        <Route path="/student/otp" element={<Otps />} />
+        <Route path="/club/otp" element={<Otpc />} />
         {/* Student Protected Routes */}
         <Route element={<ProtectedRoute allowedRoles={["student"]} />}>
           <Route path="/student/info" element={<StudentInfo />} />
           <Route path="/student/myevents" element={<MyRegisteredEvents />} />
           <Route path="/events/:eventId/register" element={<RegisterEvent />} />
-          <Route path="/student/otp" element={<Otps />} />
         </Route>
 
         {/* Club Protected Routes */}
@@ -69,7 +69,6 @@ function App() {
             element={<RegistrationList />}
           />
           <Route path="/events" element={<GetEvent />} />
-          <Route path="/club/otp" element={<Otpc />} />
         </Route>
         <Route path="/admin/approve-clubs" element={<AdminClubApproval />} />
         <Route path="/admin/login" element={<AdminLogin />} />

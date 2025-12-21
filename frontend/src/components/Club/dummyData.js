@@ -80,19 +80,6 @@ export default [
     ]
   },
   {
-    _id: 'evt7',
-    organizer: 'club6',
-    title: 'Fun Run',
-    description: '5K fun run for a good cause. All fitness levels welcome!',
-    date: '2025-12-10T07:00:00.000+05:30',
-    location: 'College Ground',
-    poster: 'https://images.unsplash.com/photo-1465101178521-1e289f71d6b8?auto=format&fit=crop&w=600&q=80',
-    registrationForm: [
-      { label: 'Name', fieldType: 'text', required: true },
-      { label: 'Phone', fieldType: 'number', required: true }
-    ]
-  },
-  {
     _id: 'evt8',
     organizer: 'club2',
     title: 'Drama Night',
