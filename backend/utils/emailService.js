@@ -235,31 +235,6 @@ const sendEventNotificationEmail=async(email,name,event)=>{
   }
 };
 
-const sendInterviewReminderEmail=async(email,name,interviewDetails)=>{
-  try {
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: `Interview Reminder: ${interviewDetails.position}`,
-      html: `
-      <h2>📅 Interview Reminder</h2>
-        <p>Dear <b>${name}</b>,</p>
-        <p>This is a reminder about your upcoming interview:</p>
-        <p><b>Position:</b> ${interviewDetails.position || "N/A"}</p>
-        <p><b>Date:</b> ${interviewDetails.date}</p>
-        <p><b>Time:</b> ${interviewDetails.time}</p>
-        <p><b>Location:</b> ${interviewDetails.location || "TBD"}</p>
-        <p>Good luck!</p>
-        <hr/>
-        <p>Club & Event Management System</p>
-      `,
-    };
-    await transporter.sendMail(mailOptions);
-    console.log(`✅ Interview reminder sent to ${email}`);
-  } catch (error) {
-    console.error("❌ Error sending interview reminder email:", error);
-  }
-};
 
 module.exports = { 
   sendOTP, 
@@ -269,5 +244,4 @@ module.exports = {
   sendClubApprovalEmail,
   sendClubRejectionEmail,
   sendEventNotificationEmail,
-  sendInterviewReminderEmail
 };
